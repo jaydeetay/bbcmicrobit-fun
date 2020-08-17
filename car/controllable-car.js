@@ -1,29 +1,46 @@
 radio.onReceivedValue(function (name, value) {
-    if (name == "forwardbackward") {
+    if (name == "fb") {
         speed = 255 * value
-    } else if (name == "leftright") {
         if (value > 0) {
-            leftbrake = 0
-            rightbrake = value
+            basic.showArrow(ArrowNames.North)
         } else if (value < 0) {
-            leftbrake = 0 - value
-            rightbrake = 0
+            basic.showArrow(ArrowNames.South)
+        } else {
+            basic.showIcon(IconNames.Diamond)
         }
+    } else if (name == "lr") {
+        if (value > 0) {
+            leftbrake = 0.0
+            rightbrake = value
+            basic.showArrow(ArrowNames.West)
+        } else if (value < 0) {
+            leftbrake = Math.abs(value)
+            rightbrake = 0.0
+            basic.showArrow(ArrowNames.East)
+        } else {
+            basic.showIcon(IconNames.SmallDiamond)
+        }
+    } else {
+        basic.showIcon(IconNames.Confused)
     }
-    leftWheelSpeed = speed * (1 - leftbrake)
-    rightWheelSpeed = speed * (1 - rightbrake)
+
+    //basic.showString(name)
+    //basic.pause(2000)
 })
-let rightbrake = 0
-let leftbrake = 0
+let rightbrake = 0.0
+let leftbrake = 0.0
 let speed = 0
 let rightWheelSpeed = 0
 let leftWheelSpeed = 0
 basic.showIcon(IconNames.Happy)
 radio.setGroup(1)
-leftWheelSpeed = 0
-rightWheelSpeed = 0
 basic.forever(function () {
-    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, leftWheelSpeed)
-    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, rightWheelSpeed)
+    leftWheelSpeed = speed * (1.0 - leftbrake)
+    rightWheelSpeed = speed * (1.0 - rightbrake)
+    let leftDir = leftWheelSpeed > 0 ? maqueen.Dir.CW : maqueen.Dir.CCW;
+    let rightDir = rightWheelSpeed > 0 ? maqueen.Dir.CW : maqueen.Dir.CCW;
+
+    maqueen.motorRun(maqueen.Motors.M1, leftDir, Math.min(255, Math.abs(leftWheelSpeed)))
+    maqueen.motorRun(maqueen.Motors.M2, rightDir, Math.min(255, Math.abs(rightWheelSpeed)))
 })
 
