@@ -12,3 +12,5 @@ https://www.dfrobot.com/product-1783.html
 
 To use with Makecode install the extension at: https://github.com/DFRobot/pxt-maqueen
 
+[Reference](https://github.com/DFRobot/Maqueen4.1-MakeCode-Tutorial/blob/master/Maqueen%204.1-MakeCode%20Graphical%20Programming%20TutorialV1.0-EN.pdf)
+
